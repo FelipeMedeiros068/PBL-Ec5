@@ -70,14 +70,15 @@ Utilize os botões para interagir com o sistema:
 
 Os alertas são acionados automaticamente com base nos seguintes limites definidos:
 
-| Parâmetro          | Limite Mínimo 🚩 | Limite Máximo 🚩 | Indicador      |
-|--------------------|------------------|------------------|----------------|
-| 🌡️ **Temperatura**  | 15.0 °C          | 25.0 °C          | 🔴 LED Vermelho|
-| 💧 **Umidade**       | 30.0 %           | 50.0 %           | 🟢 LED Verde   |
-| 💡 **Luminosidade**  | 0.0 %            | 30.0 %           | 🟡 LED Amarelo |
+| Parâmetro          | Limite Mínimo 🚩 | Limite Máximo 🚩 | Indicador      | Unidade de Medida | Precisão       |
+|--------------------|------------------|------------------|----------------|--------------------|----------------|
+| 🌡️ **Temperatura**  | 15.0 °C          | 25.0 °C          | 🔴 LED Vermelho| Graus Celsius (°C) | ±2.0°C         |
+| 💧 **Umidade**       | 30.0 %           | 50.0 %           | 🟢 LED Verde   | Umidade Relativa (%RH) | ±5% RH   |
+| 💡 **Luminosidade**  | 0.0 %            | 30.0 %           | 🟡 LED Amarelo | Intensidade Luminosa (%) | Depende do LDR |
 
-- Ao exceder algum limite acima, o respectivo LED será acionado juntamente com o buzzer.
-- Para silenciar alertas, pressione o botão `BACK` retornando ao menu principal.
+- Ao **exceder algum limite acima**, o respectivo LED será acionado **juntamente com o buzzer**.
+- Para **silenciar alertas**, pressione o botão `BACK` para retornar ao **menu principal**.
+- O **buzzer será ativado** se pelo menos **um dos parâmetros estiver fora dos limites definidos**.
 
 ---
 
