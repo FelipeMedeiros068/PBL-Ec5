@@ -103,9 +103,10 @@ Os alertas são acionados automaticamente com base nos seguintes limites definid
 RTC_DS3231 rtc; // Objeto para manipulação do RTC
 ```
 
-### 📍 Exemplo de Trecho de Código Detalhadamente Comentado
+### 📍 Código Comentado
 
 ---
+```cpp
 /************************************************************
  *                   INCLUDES & DEFINES                     *
  ************************************************************/
@@ -1122,7 +1123,7 @@ void serialLog(float temp, float humid, int valorLDR, long leituraNum) {
   Serial.print("\n");
   Serial.println("---");
 }
-
+```
 ---
 
 ## 🚧 Recomendações e Observações Gerais
