@@ -114,11 +114,9 @@ RTC_DS3231 rtc; // Objeto para manipulação do RTC
 ### 📍 Código Comentado
 
 ---
-```cpp
-/************************************************************
+```cpp/************************************************************
  *                   INCLUDES & DEFINES                     *
  ************************************************************/
- 
 #include <LiquidCrystal_I2C.h>
 #include <Wire.h>
 #include <DHT.h>
@@ -183,7 +181,6 @@ bool buzzerLightReason = false; // Indica se o buzzer foi ligado especificamente
 /************************************************************
  *               OBJETOS & VARIÁVEIS GLOBAIS                *
  ************************************************************/
- 
 // LiquidCrystal_I2C lcd(Endereço, colunas, linhas)
 LiquidCrystal_I2C lcd(I2C_ADDR, LCD_COLUMNS, LCD_LINES);
 
@@ -222,7 +219,6 @@ DateTime now;
 /************************************************************
  *                 FUNÇÃO PARA DESLIGAR ALERTAS             *
  ************************************************************/
- 
 void turnOffAllAlerts() {
   // Desliga LEDs
   digitalWrite(LED_RED, LOW);
@@ -243,7 +239,6 @@ void turnOffAllAlerts() {
 /************************************************************
  *                          SETUP                           *
  ************************************************************/
- 
 void setup() {
   Serial.begin(9600); // Inicializa a comunicação serial
   rtc.begin();    // Inicialização do Relógio em Tempo Real
@@ -305,7 +300,6 @@ void setup() {
 /************************************************************
  *                          LOOP                            *
  ************************************************************/
- 
 void loop() {
 
   // Controla a frequência da impressão serial
@@ -478,7 +472,6 @@ void loop() {
 /************************************************************
  *                       FUNÇÕES MENU                       *
  ************************************************************/
- 
 // Exibe o menu principal
 void exibir_menu() {
   switch (menu) {
@@ -626,7 +619,6 @@ void showHomePage() {
 /************************************************************
  *                       FUNÇÕES HOME                       *
  ************************************************************/
- 
 // Desenha a Home Page
 void homePage() {
   byte name0x1[]  = { B01110, B01010, B01010, B01010, B11111, B11111, B11111, B01110 };
@@ -653,7 +645,6 @@ void homePage() {
 /************************************************************
  *                FUNÇÕES DE ANIMAÇÃO/TELAS                 *
  ************************************************************/
- 
 // Exibe slogan animado no LCD
 void welcome() {
   String line = "VEJA O OCULTO";
@@ -792,78 +783,117 @@ void wizard2() {
 
 // Animação "FORTUNATA!"
 void magic() {
+  // Palavra a ser exibida
   String word = "FORTUNATA!";
+  
+  // Define o "ball" que será utilizado na animação
   byte ball[] = {
     B00100, B01110, B00100, B00000,
     B00000, B00000, B00000, B00000
   };
-
   lcd.createChar(7, ball);
 
-  int startPos   = 4;
-  int endPos     = 15;
-  int frameDelay = 200;
+  // Definindo a melodia (primeira linha do tema de Hedwig)
+  // Notas: Si - Mi - Sol - Fá# - Mi - Ré - Dó - Si
+  // Frequências aproximadas (em Hz):
+  // Si (B4) = 494, Mi (E5) = 659, Sol (G5) = 784, Fá# (F#5) = 740,
+  // Ré (D5) = 587, Dó (C5) = 523.
+  int melody[]    = {494, 659, 784, 740, 659, 587, 523, 494};
+  // Durações (em ms) para cada nota, seguindo o ritmo "pam pam pamnana pam pam paaaam"
+  int durations[] = {200, 200, 200, 400, 200, 200, 200, 600};
+  int numNotes = sizeof(melody) / sizeof(melody[0]);
+  int noteIndex = 0;
 
+  // Configura a animação no LCD
+  int startPos = 4;
+  int endPos = 15;
+  int frameDelay = 200;  // Tempo (ms) entre atualizações da animação
+  int pos = startPos + 1;
+
+  // Timers para animação e reprodução da melodia
+  unsigned long prevFrameTime = millis();
+  unsigned long noteStartTime = millis();
+
+  // Exibe o "ball" na posição inicial
   lcd.setCursor(startPos, 1);
   lcd.write(byte(7));
 
-  for (int pos = startPos + 1; pos <= endPos; pos++) {
-    delay(frameDelay);
+  // Loop que intercalará animação e som
+  while (pos <= endPos) {
+    unsigned long currentTime = millis();
 
-    // "Apaga" a posição anterior
-    lcd.setCursor(pos - 1, 1);
-    lcd.print(" ");
+    // Atualiza a animação a cada frameDelay milissegundos
+    if (currentTime - prevFrameTime >= frameDelay) {
+      // Apaga o caractere anterior e desenha o ball na nova posição
+      lcd.setCursor(pos - 1, 1);
+      lcd.print(" ");
+      lcd.setCursor(pos, 1);
+      lcd.write(byte(7));
 
-    // Desenha na nova posição
-    lcd.setCursor(pos, 1);
-    lcd.write(byte(7));
-
-    // Revela letras "FORTUNATA!" atrás da bola
-    if (pos >= 6) {
-      int letterIndex = pos - 6;
-      if (letterIndex < (int)word.length()) {
-        lcd.setCursor(pos - 1, 1);
-        lcd.print(word[letterIndex]);
+      // A partir da posição 6, revela as letras da palavra
+      if (pos >= 6) {
+        int letterIndex = pos - 6;
+        if (letterIndex < (int)word.length()) {
+          lcd.setCursor(pos - 1, 1);
+          lcd.print(word[letterIndex]);
+        }
       }
+      pos++;
+      prevFrameTime = currentTime;
+    }
+
+    // Enquanto a animação ocorre, toca as notas conforme seus tempos
+    if (noteIndex < numNotes && (currentTime - noteStartTime >= durations[noteIndex])) {
+      int noteDuration = durations[noteIndex];
+      if (melody[noteIndex] == 0) {
+        noTone(BUZZER_PIN);  // Pausa
+      } else {
+        tone(BUZZER_PIN, melody[noteIndex], noteDuration);
+      }
+      noteStartTime = currentTime;
+      noteIndex++;
     }
   }
 
+  // Finaliza a animação e desliga o buzzer
   delay(500);
   lcd.setCursor(endPos, 1);
   lcd.print(" ");
   delay(500);
+  noTone(BUZZER_PIN);
 }
-
 void displayRTC() {
-    DateTime adjustedTime = rtc.now(); // Obtém a hora atual do RTC
-
+    DateTime nowRTC = rtc.now();
+    
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("DATA: ");
-    lcd.print(adjustedTime.day() < 10 ? "0" : ""); // Adiciona zero à esquerda se necessário
-    lcd.print(adjustedTime.day());
+    lcd.print(nowRTC.day() < 10 ? "0" : "");
+    lcd.print(nowRTC.day());
     lcd.print("/");
-    lcd.print(adjustedTime.month() < 10 ? "0" : ""); 
-    lcd.print(adjustedTime.month());
+    lcd.print(nowRTC.month() < 10 ? "0" : ""); 
+    lcd.print(nowRTC.month());
     lcd.print("/");
-    lcd.print(adjustedTime.year());
+    lcd.print(nowRTC.year());
 
     lcd.setCursor(0, 1);
     lcd.print("HORA: ");
-    lcd.print(adjustedTime.hour() < 10 ? "0" : ""); 
-    lcd.print(adjustedTime.hour());
+    lcd.print(nowRTC.hour() < 10 ? "0" : ""); 
+    lcd.print(nowRTC.hour());
     lcd.print(":");
-    lcd.print(adjustedTime.minute() < 10 ? "0" : ""); 
-    lcd.print(adjustedTime.minute());
+    lcd.print(nowRTC.minute() < 10 ? "0" : ""); 
+    lcd.print(nowRTC.minute());
     lcd.print(":");
-    lcd.print(adjustedTime.second() < 10 ? "0" : ""); 
-    lcd.print(adjustedTime.second());
+    lcd.print(nowRTC.second() < 10 ? "0" : ""); 
+    lcd.print(nowRTC.second());
 }
+
+
+
 
 /************************************************************
  *                FUNÇÕES DE LEITURA/SENSORES               *
  ************************************************************/
- 
 // Calcula a média das últimas 10 leituras e exibe as telas de cada campo
 void tenthRead() {
   float sumTemp = 0;
