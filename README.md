@@ -40,6 +40,13 @@ Este projeto é um sistema de monitoramento automático de temperatura, umidade 
 
 ---
 
+### Diagrama Elétrico
+
+![DIAGRAMA ELETRICO DATALOGGER](https://github.com/user-attachments/assets/d3a90ce5-811a-49dc-8751-14028dc1fd14)
+
+
+---
+
 ## 📖 Manual de Operação
 
 ### ✅ Inicialização
