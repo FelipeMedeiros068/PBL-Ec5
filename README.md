@@ -109,6 +109,7 @@ RTC_DS3231 rtc; // Objeto para manipulação do RTC
 /************************************************************
  *                   INCLUDES & DEFINES                     *
  ************************************************************/
+ 
 #include <LiquidCrystal_I2C.h>
 #include <Wire.h>
 #include <DHT.h>
@@ -173,6 +174,7 @@ bool buzzerLightReason = false; // Indica se o buzzer foi ligado especificamente
 /************************************************************
  *               OBJETOS & VARIÁVEIS GLOBAIS                *
  ************************************************************/
+ 
 // LiquidCrystal_I2C lcd(Endereço, colunas, linhas)
 LiquidCrystal_I2C lcd(I2C_ADDR, LCD_COLUMNS, LCD_LINES);
 
@@ -211,6 +213,7 @@ DateTime now;
 /************************************************************
  *                 FUNÇÃO PARA DESLIGAR ALERTAS             *
  ************************************************************/
+ 
 void turnOffAllAlerts() {
   // Desliga LEDs
   digitalWrite(LED_RED, LOW);
@@ -231,6 +234,7 @@ void turnOffAllAlerts() {
 /************************************************************
  *                          SETUP                           *
  ************************************************************/
+ 
 void setup() {
   Serial.begin(9600); // Inicializa a comunicação serial
   rtc.begin();    // Inicialização do Relógio em Tempo Real
@@ -292,6 +296,7 @@ void setup() {
 /************************************************************
  *                          LOOP                            *
  ************************************************************/
+ 
 void loop() {
 
   // Controla a frequência da impressão serial
@@ -464,6 +469,7 @@ void loop() {
 /************************************************************
  *                       FUNÇÕES MENU                       *
  ************************************************************/
+ 
 // Exibe o menu principal
 void exibir_menu() {
   switch (menu) {
@@ -611,6 +617,7 @@ void showHomePage() {
 /************************************************************
  *                       FUNÇÕES HOME                       *
  ************************************************************/
+ 
 // Desenha a Home Page
 void homePage() {
   byte name0x1[]  = { B01110, B01010, B01010, B01010, B11111, B11111, B11111, B01110 };
@@ -637,6 +644,7 @@ void homePage() {
 /************************************************************
  *                FUNÇÕES DE ANIMAÇÃO/TELAS                 *
  ************************************************************/
+ 
 // Exibe slogan animado no LCD
 void welcome() {
   String line = "VEJA O OCULTO";
@@ -846,6 +854,7 @@ void displayRTC() {
 /************************************************************
  *                FUNÇÕES DE LEITURA/SENSORES               *
  ************************************************************/
+ 
 // Calcula a média das últimas 10 leituras e exibe as telas de cada campo
 void tenthRead() {
   float sumTemp = 0;
@@ -1131,14 +1140,6 @@ Instale as seguintes bibliotecas através do **Gerenciador de Bibliotecas do Ard
 - ✅ `LiquidCrystal_I2C`
 - ✅ `RTClib` (Adafruit)
 - ✅ `DHT sensor library` (Adafruit)
-
----
-
-## 👨‍💻 Autor e Licença
-
-- **Autor:** Seu nome aqui  
-- **Licença:** MIT  
-  _Uso livre com atribuição ao autor._
 
 ---
 
