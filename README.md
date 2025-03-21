@@ -1,49 +1,62 @@
-
 # 📌 Sistema Integrado de Monitoramento Ambiental com Arduino
 
-Este projeto é um sistema de monitoramento automático de temperatura, umidade e luminosidade, utilizando sensores, comunicação I²C, alertas visuais e sonoros, armazenamento de registros em memória EEPROM e exibição em display LCD 16x2.
+Este projeto é um sistema de monitoramento automático de temperatura, umidade e luminosidade, utilizando sensores, comunicação I²C, alertas visuais e sonoros, armazenamento de registros na EEPROM e exibição em display LCD 16x2 – tudo isso com uma interface **gamificada** que possibilita a troca de personagens durante a navegação dos menus.
 
 ---
+### Personagens Disponíveis
+
+- 👨‍🚀 Among Us (padrão)
+- 🧙 Maguinho
+- 🎃 Abóbora
+- 🧩 Cefsa
+- ➡️ Setinha
+- 🎈 Balão
+- ⚫ Bolinha
+- 🧱 Cubo
+- 🧍 Stickman
+- 👻 Fantasma
+- **Troca de personagem:** feita no menu inicial ao selecionar o ícone de configurações (posição `(11,1)`) e pressionar o botão **Selecionar**.
+
 
 ## 📝 Especificações Técnicas
 
 ### 🔧 Hardware Utilizado
 
-- **Microcontrolador:** Arduino (Uno, Nano ou compatível)
+- **Microcontrolador:** Arduino Uno/Nano/compatível
 - **Display:** LCD 16x2 com módulo I²C (Endereço: `0x27`)
-- **Sensor de temperatura e umidade:** DHT22
-- **Sensor de luminosidade:** Fotoresistor (LDR)
-- **Módulo RTC:** DS3231 (Real-Time Clock)
-- **EEPROM interna:** Armazenamento de até 100 registros de anomalias
-- **LEDs indicadores:** Vermelho, Amarelo, Verde
-- **Buzzer:** Alertas sonoros ativos
-- **Botões:** UP, DOWN, SELECT, BACK para navegação de menus
+- **Sensor de Temperatura e Umidade:** DHT22 (Digital 9)
+- **Sensor de Luminosidade:** LDR (conectado ao pino analógico A0)
+- **Módulo RTC:** DS3231 (comunicação I²C)
+- **Memória:** EEPROM interna para registro de dados
+- **LEDs Indicadores:** LED Verde (pino 10) e LED Amarelo (pino 11)
+- **Buzzer:** Pino 8 para alertas sonoros
+- **Botões:**  
+  - **Avançar:** Digital 5  
+  - **Selecionar:** Digital 6  
+  - **Voltar:** Digital 7
 
 ---
 
 ### 🔌 Conexões e Pinagem
 
-| Componente     | Pino Arduino              |
-|----------------|---------------------------|
-| LCD I²C        | SDA (A4), SCL (A5)        |
-| Sensor DHT22   | Digital 9                 |
-| LDR            | Analógico A0              |
-| RTC DS3231     | SDA (A4), SCL (A5)        |
-| Botão UP       | Digital 3                 |
-| Botão DOWN     | Digital 4                 |
-| Botão SELECT   | Digital 5                 |
-| Botão BACK     | Digital 2                 |
-| LED Verde      | Digital 6                 |
-| LED Amarelo    | Digital 7                 |
-| LED Vermelho   | Digital 8                 |
-| Buzzer         | Digital 13                |
+| Componente         | Pino Arduino              |
+|--------------------|---------------------------|
+| LCD I²C            | SDA (A4), SCL (A5)        |
+| DHT22              | Digital 9                 |
+| LDR                | Analógico A0              |
+| RTC DS3231         | SDA (A4), SCL (A5)        |
+| Botão Avançar      | Digital 5                 |
+| Botão Selecionar   | Digital 6                 |
+| Botão Voltar       | Digital 7                 |
+| LED Verde          | Digital 10                |
+| LED Amarelo        | Digital 11                |
+| Buzzer             | Digital 8                 |
 
 ---
 
 ### Diagrama Elétrico
 
-![DIAGRAMA ELETRICO DATALOGGER](https://github.com/user-attachments/assets/d3a90ce5-811a-49dc-8751-14028dc1fd14)
-
+*Insira aqui o diagrama elétrico do sistema, se disponível.*
 
 ---
 
@@ -51,49 +64,66 @@ Este projeto é um sistema de monitoramento automático de temperatura, umidade 
 
 ### ✅ Inicialização
 
-- Ao ligar o dispositivo, o sistema exibe uma animação inicial no LCD.
-- Realiza a verificação dos sensores e módulo RTC.
-- Após o término da animação, o usuário é direcionado ao menu principal.
+- Ao ligar o dispositivo, o sistema executa animações iniciais (funções como `wizard1()`, `wizard2()` e `magic()`) que exibem personagens e efeitos sonoros.
+- Após as animações, o usuário é direcionado ao **menu principal gamificado**.
 
 ### 📌 Navegação dos Menus
 
 Utilize os botões para interagir com o sistema:
-
-- `UP` e `DOWN`: Navegam entre as opções.
-- `SELECT`: Seleciona uma opção do menu.
-- `BACK`: Retorna ao menu anterior ou principal.
-
----
+- **Botão Avançar (Digital 5):** Move o personagem para a direita.
+- **Botão Voltar (Digital 7):** Move o personagem para a esquerda.
+- **Botão Selecionar (Digital 6):** Confirma a seleção da opção atual.
 
 ### 🔖 Opções Disponíveis no Menu
 
-- **ESCALA TEMP**: Seleciona a unidade de medida (Celsius, Fahrenheit ou Kelvin).
-- **HOME**: Mostra leituras atuais de temperatura, umidade e luminosidade.
-- **RTC**: Mostra data e hora atuais do módulo RTC.
+- **ESCALA TEMP:** Permite selecionar a unidade de medida da temperatura (Celsius, Fahrenheit ou Kelvin).
+- **HOME:** Exibe as leituras atuais de temperatura, umidade e luminosidade.
+- **RTC:** Exibe a data e hora atuais do módulo RTC.
+- **Configurações de Personagem:** Permite alternar entre diferentes personagens (Among Us, Maguinho, Abóbora, entre outros) para uma experiência interativa e lúdica.
+
+---
+
+## 🌡️ Escalas de Temperatura
+
+O sistema suporta três escalas de temperatura, podendo ser selecionadas através do menu **ESCALA TEMP**:
+
+1. **Celsius (°C)**
+   - Ponto de congelamento da água: 0 °C  
+   - Ponto de ebulição da água: 100 °C  
+   - Escala padrão utilizada no sistema.
+
+2. **Fahrenheit (°F)**
+   - Ponto de congelamento da água: 32 °F  
+   - Ponto de ebulição da água: 212 °F  
+   - Conversão:  
+     \[ °F = (°C \times \frac{9}{5}) + 32 \]
+
+3. **Kelvin (K)**
+   - Escala absoluta (não utiliza o símbolo de grau)  
+   - Zero absoluto: 0 K (equivalente a -273,15 °C)  
+   - Conversão:  
+     \[ K = °C + 273.15 \]
 
 ---
 
 ## 🚨 Alertas e Limites Pré-definidos
 
-Os alertas são acionados automaticamente com base nos seguintes limites definidos:
+Os alertas são acionados automaticamente quando os valores medidos se encontram fora dos limites definidos:
 
-| Parâmetro          | Limite Mínimo 🚩 | Limite Máximo 🚩 | Indicador      | Unidade de Medida | Precisão       |
-|--------------------|------------------|------------------|----------------|--------------------|----------------|
-| 🌡️ **Temperatura**  | 15.0 °C          | 25.0 °C          | 🔴 LED Vermelho| Graus Celsius (°C) | ±2.0°C         |
-| 💧 **Umidade**       | 30.0 %           | 50.0 %           | 🟢 LED Verde   | Umidade Relativa (%RH) | ±5% RH   |
-| 💡 **Luminosidade**  | 0.0 %            | 30.0 %           | 🟡 LED Amarelo | Intensidade Luminosa (%) | Depende do LDR |
+| Parâmetro        | Limite Mínimo | Limite Máximo | Indicador             | Unidade de Medida            |
+|------------------|---------------|---------------|-----------------------|------------------------------|
+| **Temperatura**  | 20 °C         | 25 °C         | LED Amarelo + Buzzer  | (conforme a escala escolhida)|
+| **Umidade**      | 30 %          | 60 %          | LED Amarelo + Buzzer  | % de Umidade Relativa        |
+| **Luminosidade** | Variável*     | -             | LED Amarelo + Buzzer  | Percentual calculado         |
 
-- Ao **exceder algum limite acima**, o respectivo LED será acionado **juntamente com o buzzer**.
-- Para **silenciar alertas**, pressione o botão `BACK` para retornar ao **menu principal**.
-- O **buzzer será ativado** se pelo menos **um dos parâmetros estiver fora dos limites definidos**.
+> *A faixa de luminosidade pode variar conforme as condições ambientais.
 
 ---
 
 ## 💾 Registro Automático de Anomalias (EEPROM)
 
-- Registros automáticos de condições fora dos limites são salvos na EEPROM.
-- Capacidade máxima de armazenamento: **100 registros**.
-- Cada registro inclui: data/hora, temperatura e umidade.
+- Condições que ultrapassem os limites definidos são registradas automaticamente na EEPROM.
+- Essa funcionalidade permite o armazenamento e análise posterior dos dados registrados.
 
 ---
 
@@ -102,571 +132,620 @@ Os alertas são acionados automaticamente com base nos seguintes limites definid
 ### 📍 Bibliotecas e Definições Principais
 
 ```cpp
-#include <LiquidCrystal_I2C.h> // Comunicação LCD via I²C
-#include <Wire.h>              // Comunicação I²C
-#include <DHT.h>               // Sensor DHT22
-#include <RTClib.h>            // RTC DS3231
-#include <EEPROM.h>            // Armazenamento EEPROM
-
-RTC_DS3231 rtc; // Objeto para manipulação do RTC
+#include <Wire.h>               // Comunicação I²C
+#include <LiquidCrystal_I2C.h>  // LCD com interface I²C
+#include <RTClib.h>             // Manipulação do RTC DS3231
+#include <DHT.h>                // Leitura do sensor DHT22
+#include <EEPROM.h>             // Armazenamento persistente
 ```
 
-### 📍 Código Comentado
+## 📍 Estrutura do Código
+Animações e Introdução: Funções como wizard1(), wizard2() e magic() criam uma introdução animada com personagens.
+Gerenciamento do Display: Funções e classes para gerenciar a exibição dos menus e animações gamificadas.
+Leitura de Sensores: Realiza leituras periódicas (a cada 5 segundos) dos sensores DHT22 (temperatura e umidade) e LDR (luminosidade).
+Alertas: Ativação do LED Amarelo e buzzer quando os valores medidos estiverem fora dos limites.
+Interação com o Usuário: Navegação entre menus e troca de personagem para uma experiência interativa.
+Registro de Dados: Armazena automaticamente os dados de anomalias na EEPROM.
 
----
-```cpp/************************************************************
- *                   INCLUDES & DEFINES                     *
- ************************************************************/
-#include <LiquidCrystal_I2C.h>
+
+
+
+## 🛠️ Bibliotecas Necessárias
+Instale as seguintes bibliotecas via Gerenciador de Bibliotecas do Arduino IDE:
+LiquidCrystal_I2C
+RTClib
+DHT sensor library
+EEPROM (biblioteca padrão da IDE do Arduino)
+
+
+
+## 💬 Código Fonte (Resumo com Comentários)
+
+```cpp
 #include <Wire.h>
-#include <DHT.h>
+#include <LiquidCrystal_I2C.h>
 #include <RTClib.h>
+#include <DHT.h>
 #include <EEPROM.h>
 
-RTC_DS3231 rtc; //OBJETO DO TIPO RTC_DS3231
- 
-// COnfigurações dos dias da semana
-char daysOfTheWeek[7][12] = {"Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"};
-#define UTC_OFFSET -3    // Ajuste de fuso horário para UTC-3
-#define LOG_OPTION 1     // Opção para ativar a leitura do log
+LiquidCrystal_I2C lcd(0x27, 16, 2); // Configuração do LCD 16x2
 
-// Configurações da EEPROM
-const int maxRecords     = 100;
-const int recordSize     = 8; // Tamanho de cada registro em bytes
-int       startAddress   = 0;
-int       endAddress     = maxRecords * recordSize;
-int       currentAddress = 0;
+// Variáveis globais
+const int LDR_PIN = A0; // Pino onde o LDR está conectado
+int valorLDR = 0;       // Valor lido do LDR
+int lightLevel = 0;     // Valor mapeado (0-100)
+bool mostrarPercentual = true; // Controla se exibe percentual ou valor bruto
+unsigned long ultimaLeitura = 0; // Armazena o tempo da última leitura
+const unsigned long intervaloLeitura = 5000; // Intervalo de 5 segundos
 
-int lastLoggedMinute = -1;
+RTC_DS3231 rtc; // RTC
 
-// Triggers de temperatura e umidade
-float trigger_t_min = 15.0; // Exemplo: valor mínimo de temperatura
-float trigger_t_max = 25.0; // Exemplo: valor máximo de temperatura
-float trigger_u_min = 30.0; // Exemplo: valor mínimo de umidade
-float trigger_u_max = 50.0; // Exemplo: valor máximo de umidade
-float trigger_l_min = 0.0; // Exemplo: valor mínimo de luminosidade
-float trigger_l_max = 30.0; // Exemplo: valor máximo de lumisodidade
+// Enum para gerenciar as telas
+enum TelaAtual {
+  TELA_HOME,
+  TELA_LUMINOSIDADE,
+  TELA_DATAHORA,
+  TELA_UMIDADE,
+  TELA_TEMPERATURA
+};
 
-// Endereço e dimensões do LCD I2C
-#define I2C_ADDR     0x27
-#define LCD_COLUMNS  16
-#define LCD_LINES    2
+TelaAtual telaAtual = TELA_HOME; // Tela inicial
 
 // DHT Sensor
-#define DHTPIN       9       // Pino do DHT
-#define DHTTYPE      DHT11   // Tipo de sensor DHT
-
-// Botões
-#define UP_BUTTON     3
-#define DOWN_BUTTON   4
-#define SELECT_BUTTON 5
-#define BACK_BUTTON   2
-
-// LEDs
-#define LED_RED  8
-#define LED_YEL  7
-#define LED_GRE  6
-
-// Buzzer
-#define BUZZER_PIN     13
-bool buzzerOn          = false; // Indica se o buzzer está ligado
-bool buzzerTempReason  = false; // Indica se o buzzer foi ligado especificamente por causa da temperatura
-bool buzzerHumdReason  = false; // Indica se o buzzer foi ligado especificamente por causa da umidade
-bool buzzerLightReason = false; // Indica se o buzzer foi ligado especificamente por causa da luminosidade
-
-
-// LDR
-#define LDR_PIN A0
-
-/************************************************************
- *               OBJETOS & VARIÁVEIS GLOBAIS                *
- ************************************************************/
-// LiquidCrystal_I2C lcd(Endereço, colunas, linhas)
-LiquidCrystal_I2C lcd(I2C_ADDR, LCD_COLUMNS, LCD_LINES);
-
-// DHT
+#define DHTPIN 9
+#define DHTTYPE DHT22
 DHT dht(DHTPIN, DHTTYPE);
 
-// Menu
-int   menu              = 1;
-bool  rtcMenuActive     = false;
-bool  subMenuTempActive = false; 
-bool  homePageActive    = false;
-int   subMenuIndex      = 1;    // Índice no submenu de temperatura
+float temp = 0.0;    // Temperatura atual
+float humid = 0.0;   // Umidade atual
 
-// Escala de temperatura (1=Celsius, 2=Fahrenheit, 3=Kelvin)
-int  temperatureScale = 1;
-float lastAvgTemp; // Armazena a última média de temperatura
-float lastAvgHumd; // Armazena a última média de umidade
+// Endereços da EEPROM
+const int addrLDR = 0;
+const int addrTemp = sizeof(int);
+const int addrHumid = addrTemp + sizeof(float);
 
-// Leituras de sensores
-float temp         = 0.0;
-float humid        = 0.0;
-int   lightLevel   = 0;
+// Forward declarations
+class Tela;
+class TelaHome;
+class TelaLuminosidade;
+class Figura;
+class Display;
 
-// Arrays de leituras (se quiser usar média futuramente)
-float tempReadings[10]; 
-float humdReadings[10];
-int   currentIndex = 0;
+// ---- CLASSE FIGURA ---- //
+class Figura {
+  private:
+    String nome;
+    byte pixeisFigura[8];
+    int indice;
 
-unsigned long lastHomeUpdate = 0;
-long totalLeituras = 0;
-
-DateTime adjustedTime;
-DateTime now;
-
-
-/************************************************************
- *                 FUNÇÃO PARA DESLIGAR ALERTAS             *
- ************************************************************/
-void turnOffAllAlerts() {
-  // Desliga LEDs
-  digitalWrite(LED_RED, LOW);
-  digitalWrite(LED_GRE, LOW);
-  digitalWrite(LED_YEL, LOW);
-
-  // Desliga Buzzer
-  noTone(BUZZER_PIN);
-
-  // Zera flags
-  buzzerOn          = false;
-  buzzerTempReason  = false;
-  buzzerHumdReason  = false;
-  buzzerLightReason = false;
-}
-
-
-/************************************************************
- *                          SETUP                           *
- ************************************************************/
-void setup() {
-  Serial.begin(9600); // Inicializa a comunicação serial
-  rtc.begin();    // Inicialização do Relógio em Tempo Real
-  rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-  EEPROM.begin();
-
-  if(! rtc.begin()) { // SE O RTC NÃO FOR INICIALIZADO, FAZ
-    Serial.println("DS3231 não encontrado"); //IMPRIME O TEXTO NO MONITOR SERIAL
-    while(1); //SEMPRE ENTRE NO LOOP
-  }
-  if(rtc.lostPower()){ //SE RTC FOI LIGADO PELA PRIMEIRA VEZ / FICOU SEM ENERGIA / ESGOTOU A BATERIA, FAZ
-    Serial.println("DS3231 OK!"); //IMPRIME O TEXTO NO MONITOR SERIAL
-    rtc.adjust(DateTime(2025, 3, 20, 19, 30, 45)); //(ANO), (MÊS), (DIA), (HORA), (MINUTOS), (SEGUNDOS)
-  }
-  delay(100); //INTERVALO DE 100 MILISSEGUNDOS
-  
-  // Inicialização dos pinos de botões
-  pinMode(UP_BUTTON,     INPUT_PULLUP);
-  pinMode(DOWN_BUTTON,   INPUT_PULLUP);
-  pinMode(SELECT_BUTTON, INPUT_PULLUP);
-  pinMode(BACK_BUTTON,   INPUT_PULLUP);
-
-  // Buzzer e LEDs
-  pinMode(BUZZER_PIN, OUTPUT);
-  pinMode(LED_RED,    OUTPUT);
-  pinMode(LED_YEL,    OUTPUT);
-  pinMode(LED_GRE,    OUTPUT);
-
-  // LDR
-  pinMode(LDR_PIN, INPUT);
-
-  // Inicializa o DHT
-  dht.begin();
-
-  // LCD
-  lcd.init();
-  lcd.backlight();
-
-  // Animações de introdução
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  wizard1();
-  wizard2();
-  magic();
-  lcd.clear();
-  welcome();
-  delay(1000);
-  
-  lcd.clear();
-  lcd.setCursor(4, 0);
-  lcd.print("Loading");
-  delay(1500);
-
-  // Exibe o menu principal ao iniciar
-  exibir_menu();
-}
-
-
-/************************************************************
- *                          LOOP                            *
- ************************************************************/
-void loop() {
-
-  // Controla a frequência da impressão serial
-  static unsigned long lastSerialTime = 0;
-
-  // ==== LEITURA DE SENSORES ====
-  int valorLDR   = analogRead(LDR_PIN);
-  lightLevel     = map(valorLDR, 40, 950, 0, 100);
-
-  float tempRaw  = dht.readTemperature(); // Celsius
-  float humRaw   = dht.readHumidity();
-
-  if (!isnan(tempRaw)) {
-    // Converte a temperatura conforme a escala
-    switch (temperatureScale) {
-      case 1: // Celsius
-        temp = tempRaw;
-        break;
-      case 2: // Fahrenheit
-        temp = (tempRaw * 1.8) + 32;
-        break;
-      case 3: // Kelvin
-        temp = tempRaw + 273.15;
-        break;
-    }
-  }
-
-  if (!isnan(humRaw)) {
-    humid = humRaw; // umidade permanece em %
-  }
-
-  tempReadings[currentIndex] = temp;  // Armazena a leitura atual da temperatura
-  humdReadings[currentIndex] = humid;  // Armazena a leitura atual da umidade
-
-  currentIndex = (currentIndex + 1) % 10; // Atualiza o índice para a próxima leitura
-
-  if (currentIndex == 9) {
-    tenthRead();
-  }
-
-  // Exibição serial periódica (a cada 1s, por exemplo)
-  if (millis() - lastSerialTime >= 1000UL) {
-    lastSerialTime = millis();
-    // Incrementa a contagem total de leituras
-    totalLeituras++;
-    serialLog(temp, humid, valorLDR, totalLeituras);
-  }
-
-  recordEEPROM();
-
-  if (homePageActive) {
-    // Verifica luminosidade só enquanto em HOME
-    checkLightAlert();
-
-    // A cada 1s, atualiza a tela
-    if (millis() - lastHomeUpdate >= 1000UL) {
-      lastHomeUpdate = millis();
-      showHomeValues();
-    }
-  }
-  else {
-    // (NOVO) Se não está na HOME, desliga todos os alertas
-    turnOffAllAlerts();
-  }
-
-  // ==== SUBMENU DE TEMPERATURA ====
-  if (subMenuTempActive) {
-    if (!digitalRead(BACK_BUTTON)) {
-      subMenuTempActive = false;
-      exibir_menu();
-      delay(100);
-      while (!digitalRead(BACK_BUTTON));
+  public:
+    Figura(String nome, byte pixeis[8], int indice) {
+      this->nome = nome;
+      memcpy(this->pixeisFigura, pixeis, sizeof(pixeisFigura));
+      this->indice = indice;
     }
 
-    if (!digitalRead(DOWN_BUTTON)) {
-      subMenuIndex++;
-      if (subMenuIndex > 3) subMenuIndex = 3;
-      exibir_submenu_temp();
-      delay(100);
-      while (!digitalRead(DOWN_BUTTON));
-    }
+    String getNome() { return nome; }
+    byte* getPixeis() { return pixeisFigura; }
+    int getIndice() { return indice; }
+};
 
-    if (!digitalRead(UP_BUTTON)) {
-      subMenuIndex--;
-      if (subMenuIndex < 1) subMenuIndex = 1;
-      exibir_submenu_temp();
-      delay(100);
-      while (!digitalRead(UP_BUTTON));
-    }
+// ---- CLASSE DISPLAY ---- //
+class Display {
+  private:
+    int personagemX;
+    int personagemY;
+    bool personagemEspelhado;
 
-    if (!digitalRead(SELECT_BUTTON)) {
-      executeActionTemp();   // Define a escala de temperatura
-      subMenuTempActive = false;
-      exibir_menu();
-      delay(100);
-      while (!digitalRead(SELECT_BUTTON));
-    }
+  public:
+    Display() : personagemX(1), personagemY(1), personagemEspelhado(false) {}
 
-    // Se esta no submenu, encerra o loop
-    return;
-  }
+    byte* espelharFigura(Figura figura) {
+      static byte byteEspelhado[8];
+      byte* original = figura.getPixeis();
 
-  // ==== TELA HOME ====
-  if (homePageActive) {
-    if (!digitalRead(BACK_BUTTON)) {
-      homePageActive = false;
-      exibir_menu();
-      delay(100);
-      while (!digitalRead(BACK_BUTTON));
-    }
-
-    // Se esta na home, encerra o loop
-    return;
-  }
-
-  // ==== MENU PRINCIPAL ====
-  if (!digitalRead(DOWN_BUTTON)) {
-    menu++;
-    exibir_menu();
-    delay(100);
-    while (!digitalRead(DOWN_BUTTON));
-  }
-  if (!digitalRead(UP_BUTTON)) {
-    menu--;
-    exibir_menu();
-    delay(100);
-    while (!digitalRead(UP_BUTTON));
-  }
-  if (!digitalRead(SELECT_BUTTON)) {
-    executeAction();
-    // Se a ação não ativou o submenu nem home, reexibe o menu
-    if (!subMenuTempActive && !homePageActive) {
-      exibir_menu();
-    }
-    delay(100);
-    while (!digitalRead(SELECT_BUTTON));
-  }
-
-  if (rtcMenuActive) {
-        displayRTC();
-        if (!digitalRead(BACK_BUTTON)) {
-            rtcMenuActive = false;
-            exibir_menu();
-            delay(100);
-            while (!digitalRead(BACK_BUTTON));
+      for (int i = 0; i < 8; i++) {
+        byte linha = original[i];
+        byte novoByte = 0;
+        for (int j = 0; j < 5; j++) {
+          if (linha & (1 << j)) {
+            novoByte |= (1 << (4 - j));
+          }
         }
-        return;
-    }
-
-    if (!digitalRead(DOWN_BUTTON)) {
-        menu++;
-        exibir_menu();
-        delay(100);
-        while (!digitalRead(DOWN_BUTTON));
-    }
-    if (!digitalRead(UP_BUTTON)) {
-        menu--;
-        exibir_menu();
-        delay(100);
-        while (!digitalRead(UP_BUTTON));
-    }
-    if (!digitalRead(SELECT_BUTTON)) {
-        executeAction();
-        delay(100);
-        while (!digitalRead(SELECT_BUTTON));
-    }
-}
-
-
-/************************************************************
- *                       FUNÇÕES MENU                       *
- ************************************************************/
-// Exibe o menu principal
-void exibir_menu() {
-  switch (menu) {
-    case 0:
-      menu = 1;
-      break;
-    case 1:
-      lcd.clear();
-      lcd.print(">ESCALA TEMP.");
-      lcd.setCursor(0, 1);
-      lcd.print(" HOME");
-      break;
-    case 2:
-      lcd.clear();
-      lcd.print(" ESCALA TEMP.");
-      lcd.setCursor(0, 1);
-      lcd.print(">HOME");
-      break;
-    case 3:
-      lcd.clear();
-      lcd.print(" HOME");
-      lcd.setCursor(0, 1);
-      lcd.print(">RTC");
-      break;
-    case 4:
-      menu = 3;
-      break;
-  }
-}
-
-// Exibe o submenu de temperatura
-void exibir_submenu_temp() {
-  lcd.clear();
-  switch (subMenuIndex) {
-    case 0:
-      subMenuIndex = 1;
-      // Força o usuário a manter o range do submenu
-    case 1:
-      lcd.clear();
-      lcd.print(">CELSIUS");
-      lcd.setCursor(0, 1);
-      lcd.print(" FAHRENHEIT");
-      break;
-
-    case 2:
-      lcd.clear();
-      lcd.print(" CELSIUS");
-      lcd.setCursor(0, 1);
-      lcd.print(">FAHRENHEIT");
-      break;
-
-    case 3:
-      lcd.clear();
-      lcd.print(" FAHRENHEIT");
-      lcd.setCursor(0, 1);
-      lcd.print(">KELVIN");
-      break;
-
-    case 4:
-      // Força o usuário a manter o range do submenu
-      subMenuIndex = 3;
-      break;
-  }
-}
-
-// Define a escala de temperatura e exibe a confirmação
-void executeActionTemp() {
-  switch (subMenuIndex) {
-    case 1: temperatureScale = 1; break; // Celsius
-    case 2: temperatureScale = 2; break; // Fahrenheit
-    case 3: temperatureScale = 3; break; // Kelvin
-  }
-  lcd.clear();
-  lcd.print("Escala defin.");
-  delay(1000);
-}
-
-// Executa ação do menu principal
-void executeAction() {
-  switch (menu) {
-    case 1:
-      subMenuTempActive = true;
-      subMenuIndex = 1;
-      exibir_submenu_temp();
-      break;
-    case 2:
-      showHomePage();
-      break;
-    case 3:
-      rtcMenuActive = true; // Ativa o menu do RTC
-      lcd.clear();
-      while (rtcMenuActive) {
-        displayRTC(); // Atualiza a tela com data e hora
-        delay(1000);
-
-        // Verifica se o botão BACK foi pressionado para voltar ao menu principal
-        if (!digitalRead(BACK_BUTTON)) {
-          rtcMenuActive = false;
-          exibir_menu();
-          delay(100);
-          while (!digitalRead(BACK_BUTTON)); // Aguarda o botão ser solto
-        }
+        byteEspelhado[i] = novoByte;
       }
-      break;
-  }
-}
 
-void showHomeValues() {
-
-  // --- CRIA SUFIXO DE TEMPERATURA ---
-  char tempSuffix = 'C'; // Por padrão, Celsius
-  if (temperatureScale == 2)      tempSuffix = 'F';
-  else if (temperatureScale == 3) tempSuffix = 'K';
-
-  String tempStr = String(lastAvgTemp, 0) + tempSuffix;
-  String lightStr = String(lightLevel) + "%";
-  String humStr = String(lastAvgHumd, 0) + "%";
-
-  // Limpa toda a linha 1 antes de imprimir novos valores
-  lcd.setCursor(0, 1);
-  lcd.print("                ");
-
-  //  Exibe temperatura no (0,1), luminosidade no (6,1), umidade no (12,1)
-  lcd.setCursor(0, 1);
-  lcd.print(tempStr);
-
-  lcd.setCursor(6, 1);
-  lcd.print(lightStr);
-
-  lcd.setCursor(12, 1);
-  lcd.print(humStr);
-}
-
-// Mostra a tela home
-void showHomePage() {
-  lcd.clear();
-  homePageActive = true;
-  homePage();
-
-  // Registra as entradas na página home
-  lastHomeUpdate = millis();
-}
-
-
-/************************************************************
- *                       FUNÇÕES HOME                       *
- ************************************************************/
-// Desenha a Home Page
-void homePage() {
-  byte name0x1[]  = { B01110, B01010, B01010, B01010, B11111, B11111, B11111, B01110 };
-  byte name0x7[]  = { B00001, B00010, B00100, B01000, B11111, B00010, B00100, B01000 };
-  byte name0x13[] = { B00100, B00100, B01110, B01110, B11111, B11111, B11111, B01110 };
-
-  lcd.createChar(0, name0x1);
-  lcd.createChar(1, name0x7);
-  lcd.createChar(2, name0x13);
-
-  lcd.setCursor(1, 0); 
-  lcd.write((uint8_t)0);
-
-  lcd.setCursor(7, 0);
-  lcd.write((uint8_t)1);
-
-  lcd.setCursor(13, 0);
-  lcd.write((uint8_t)2);
-
-  showHomeValues();
-}
-
-
-/************************************************************
- *                FUNÇÕES DE ANIMAÇÃO/TELAS                 *
- ************************************************************/
-// Exibe slogan animado no LCD
-void welcome() {
-  String line = "VEJA O OCULTO";
-  for (int i = 0; i < (int)line.length(); i++) {
-    lcd.setCursor(i + 1, 0);
-    lcd.print(line[i]);
-    delay(150);
-
-    // Efeito de letras 'caindo'
-    lcd.setCursor(i + 1, 0);
-    lcd.print(" ");
-    lcd.setCursor(i + 1, 1);
-    lcd.print(line[i]);
-
-    // Buzzer
-    if (!isWhitespace(line[i])) {
-      tone(BUZZER_PIN, 250);
-      delay(150);
-      noTone(BUZZER_PIN);
+      return byteEspelhado;
     }
+
+    void imprimirObjeto(Figura figura, int x, int y) {
+      lcd.createChar(figura.getIndice(), figura.getPixeis());
+      lcd.setCursor(x, y);
+      lcd.write(figura.getIndice());
+    }
+
+    void imprimirFigura(Figura figura, int x, int y, bool espelhar) {
+      byte* pixeis = espelhar ? espelharFigura(figura) : figura.getPixeis();
+      Figura figuraTemp(figura.getNome(), pixeis, figura.getIndice());
+      imprimirObjeto(figuraTemp, x, y);
+    }
+
+    void deslizarFigura(Figura figura, int xInicio, int xFinal, int y) {
+      int diferenca = xFinal - xInicio;
+      bool paraEsquerda = diferenca < 0;
+      int direcao = paraEsquerda ? -1 : 1;
+
+      if (figura.getNome() == "AmongUs") {
+        personagemEspelhado = paraEsquerda;
+      }
+
+      imprimirFigura(figura, xInicio, y, paraEsquerda);
+
+      for (int x = xInicio; paraEsquerda ? x > xFinal : x < xFinal; x += direcao) {
+        lcd.setCursor(x, y);
+        lcd.write(' ');
+        int novaPos = x + direcao;
+        imprimirFigura(figura, novaPos, y, paraEsquerda);
+        delay(200);
+      }
+
+      if (figura.getNome() == "AmongUs") {
+        personagemX = xFinal;
+      }
+    }
+
+    void limparCelula(int x, int y) {
+      lcd.setCursor(x, y);
+      lcd.write(' ');
+    }
+
+    void limparColunaCima() {
+      for (int x = 0; x < 16; x++) {
+        lcd.setCursor(x, 0);
+        lcd.write(' ');
+      }
+      limparCelula(0, 1);
+      limparCelula(15, 1);
+    }
+
+    void pularFigura(Figura figura, int x, int y, bool espelhar) {
+      byte* pixeis = espelhar ? espelharFigura(figura) : figura.getPixeis();
+      byte figuraPulando[8];
+
+      for (int i = 0; i < 7; i++) {
+        figuraPulando[i] = pixeis[i + 1];
+      }
+      figuraPulando[7] = B00000;
+
+      Figura figuraTemp(figura.getNome(), figuraPulando, figura.getIndice());
+      imprimirObjeto(figuraTemp, x, y);
+      delay(600);
+
+      byte* pixeisRestaurados = espelhar ? espelharFigura(figura) : figura.getPixeis();
+      Figura figuraRestaurada(figura.getNome(), pixeisRestaurados, figura.getIndice());
+      imprimirObjeto(figuraRestaurada, x, y);
+      delay(300);
+    }
+
+    int getPersonagemX() { return personagemX; }
+    int getPersonagemY() { return personagemY; }
+    bool getPersonagemEspelhado() { return personagemEspelhado; }
+};
+
+// ---- CLASSE ABSTRATA TELA ---- //
+class Tela {
+  protected:
+    int destinoAtual = 0; // Destino atual do personagem
+
+  public:
+    virtual void imprimirTela(Display& display) = 0;
+
+    void moverDestino(Display& display, Figura& personagem, int destino, const int* destinos, int numDestinos) {
+      if (destino < 0 || destino >= numDestinos) return; // Verifica se o destino é válido
+
+      int xAtual = display.getPersonagemX();
+      int yAtual = display.getPersonagemY();
+      int xFinal = destinos[destino]; // Pega o ponto de parada correspondente
+
+      display.deslizarFigura(personagem, xAtual, xFinal, yAtual);
+      destinoAtual = destino;
+    }
+
+    virtual void selecionar(Display& display, Figura& personagem) {
+      int xAtual = display.getPersonagemX();
+      int yAtual = display.getPersonagemY();
+      bool espelhar = display.getPersonagemEspelhado();
+      display.pularFigura(personagem, xAtual, yAtual, espelhar);
+    }
+
+    int getDestinoAtual() { return destinoAtual; }
+    void setDestinoAtual(int novoDestino) { destinoAtual = novoDestino; }
+};
+
+// ---- SUBCLASSE TELAHOME ---- //
+class TelaHome : public Tela {
+  private:
+    Figura figuraConfiguracoes;
+    Figura figuraLuminosidade;
+    Figura figuraUmidade;
+    Figura figuraTemperatura;
+    Figura figuraDataHora;
+
+    // Pontos de parada da TelaHome
+    const int destinos[7] = {1, 3, 5, 7, 9, 11, 14};
+    const int numDestinos = 7;
+
+  public:
+    TelaHome(Figura configuracoes, Figura luminosidade, Figura umidade, Figura temperatura, Figura datahora)
+      : figuraConfiguracoes(configuracoes), figuraLuminosidade(luminosidade), figuraUmidade(umidade), figuraTemperatura(temperatura), figuraDataHora(datahora) {}
+
+    void imprimirTela(Display& display) override {
+      display.limparColunaCima();
+      display.imprimirFigura(figuraConfiguracoes, 11, 0, false);
+      display.imprimirFigura(figuraLuminosidade, 3, 0, false);
+      display.imprimirFigura(figuraUmidade, 5, 0, false);
+      display.imprimirFigura(figuraTemperatura, 7, 0, false);
+      display.imprimirFigura(figuraDataHora, 9, 0, false);
+    }
+
+    void moverDestino(Display& display, Figura& personagem, int destino) {
+      Tela::moverDestino(display, personagem, destino, destinos, numDestinos);
+    }
+};
+
+// VALOR LDR
+void imprimirValorLDR() {
+  lcd.setCursor(7, 0);
+  lcd.print("    "); // Limpa a área antes de exibir o valor
+  lcd.setCursor(7, 0);
+  if (mostrarPercentual) {
+    char buffer[5]; // Buffer para armazenar a string formatada
+    snprintf(buffer, sizeof(buffer), "%3d%%", lightLevel); // Formata o valor para ocupar 3 caracteres + %
+    lcd.print(buffer);
+  } else {
+    char buffer[5];
+    snprintf(buffer, sizeof(buffer), "%4d", valorLDR); // Formata o valor para ocupar 4 caracteres
+    lcd.print(buffer);
   }
 }
+
+// ---- SUBCLASSE TELALUMINOSIDADE ---- //
+class TelaLuminosidade : public Tela {
+  private:
+    Figura figuraHome;
+    Figura figuraLuminosidade;
+
+    // Pontos de parada da TelaLuminosidade
+    const int destinos[3] = {1, 3, 11};
+    const int numDestinos = 3;
+
+  public:
+
+    TelaLuminosidade(Figura home, Figura luminosidade)
+      : figuraHome(home), figuraLuminosidade(luminosidade) {}
+
+    void imprimirTela(Display& display) override {
+      display.limparColunaCima();
+      display.imprimirFigura(figuraHome, 3, 0, false);
+      display.imprimirFigura(figuraLuminosidade, 11, 0, false);
+
+      // Exibe o valor do LDR
+      imprimirValorLDR();
+    }
+
+    void moverDestino(Display& display, Figura& personagem, int destino) {
+      Tela::moverDestino(display, personagem, destino, destinos, numDestinos);
+    }
+};
+
+// ---- SUBCLASSE TELADATAHORA ---- //
+class TelaDataHora : public Tela {
+  private:
+    Figura figuraHome;
+
+    // Pontos de parada da TelaDataHora
+    const int destinos[2] = {9, 0}; // Posições (9,1) e (0,1)
+    const int numDestinos = 2;
+
+  public:
+    TelaDataHora(Figura home)
+      : figuraHome(home) {}
+
+    void imprimirTela(Display& display) override {
+      display.limparColunaCima();
+
+      // Exibe o ícone Home
+      display.imprimirFigura(figuraHome, 0, 0, false);
+
+      // Obtém a data e hora atual do RTC
+      DateTime now = rtc.now();
+
+      // Formata e exibe a hora (HH:MM)
+      lcd.setCursor(2, 0);
+      lcd.print(now.hour() < 10 ? "0" : ""); // Adiciona zero à esquerda se necessário
+      lcd.print(now.hour());
+      lcd.print(":");
+      lcd.print(now.minute() < 10 ? "0" : ""); // Adiciona zero à esquerda se necessário
+      lcd.print(now.minute());
+
+      // Formata e exibe a data (DD/MM/YY)
+      lcd.setCursor(8, 0);
+      lcd.print(now.day() < 10 ? "0" : ""); // Adiciona zero à esquerda se necessário
+      lcd.print(now.day());
+      lcd.print("/");
+      lcd.print(now.month() < 10 ? "0" : ""); // Adiciona zero à esquerda se necessário
+      lcd.print(now.month());
+      lcd.print("/");
+      lcd.print(now.year() % 100); // Pega os últimos dois dígitos do ano
+    }
+
+    void moverDestino(Display& display, Figura& personagem, int destino) {
+      Tela::moverDestino(display, personagem, destino, destinos, numDestinos);
+    }
+};
+
+// ---- SUBCLASSE TELAUmidade ---- //
+class TelaUmidade : public Tela {
+  private:
+    Figura figuraHome;
+    Figura figuraUmidade;
+
+    // Pontos de parada da TelaUmidade
+    const int destinos[3] = {1, 3, 5}; // Posições (1,1), (3,1), (5,1)
+    const int numDestinos = 3;
+
+  public:
+    TelaUmidade(Figura home, Figura umidade)
+      : figuraHome(home), figuraUmidade(umidade) {}
+
+    void imprimirTela(Display& display) override {
+      display.limparColunaCima();
+
+      // Exibe o ícone Home
+      display.imprimirFigura(figuraHome, 3, 0, false);
+
+      // Exibe o ícone Umidade
+      display.imprimirFigura(figuraUmidade, 11, 0, false);
+
+      // Exibe o valor da umidade
+      lcd.setCursor(7, 0);
+      lcd.print("   "); // Limpa a área antes de exibir o valor
+      lcd.setCursor(7, 0);
+      lcd.print(humid, 1); // Exibe a umidade com 1 casa decimal
+      lcd.setCursor(10, 0);
+      lcd.print("%");
+    }
+
+    void moverDestino(Display& display, Figura& personagem, int destino) {
+      Tela::moverDestino(display, personagem, destino, destinos, numDestinos);
+    }
+};
+
+// ---- SUBCLASSE TELATemperatura ---- //
+class TelaTemperatura : public Tela {
+  private:
+    Figura figuraHome;
+    Figura figuraTemperatura;
+    int temperaturaScale = 1; // 1 = Celsius, 2 = Fahrenheit, 3 = Kelvin
+
+    // Pontos de parada da TelaTemperatura
+    const int destinos[4] = {1, 3, 7, 11}; // Posições (1,1), (3,1), (11,1)
+    const int numDestinos = 4;
+
+    // Método para converter temperatura
+    float converterTemperatura(float tempCelsius, int escala) {
+      switch (escala) {
+        case 1: // Celsius
+          return tempCelsius;
+        case 2: // Fahrenheit
+          return tempCelsius * 9 / 5 + 32;
+        case 3: // Kelvin
+          return tempCelsius + 273.15;
+        default:
+          return tempCelsius;
+      }
+    }
+
+  public:
+    TelaTemperatura(Figura home, Figura temperatura)
+      : figuraHome(home), figuraTemperatura(temperatura) {}
+
+    void imprimirTela(Display& display) override {
+      display.limparColunaCima();
+
+      // Exibe o ícone Home
+      display.imprimirFigura(figuraHome, 3, 0, false);
+
+      // Exibe o ícone Temperatura
+      display.imprimirFigura(figuraTemperatura, 11, 0, false);
+
+      // Converte a temperatura para a escala atual
+      float tempConvertida = converterTemperatura(temp, temperaturaScale);
+
+      // Exibe o valor da temperatura
+      lcd.setCursor(6, 0);
+      lcd.print("    "); // Limpa a área antes de exibir o valor
+      lcd.setCursor(6, 0);
+      lcd.print(tempConvertida, 1); // Exibe a temperatura com 1 casa decimal
+
+      // Exibe a escala de temperatura
+      lcd.setCursor(10, 0);
+      switch (temperaturaScale) {
+        case 1:
+          lcd.print("C");
+          break;
+        case 2:
+          lcd.print("F");
+          break;
+        case 3:
+          lcd.print("K");
+          break;
+      }
+
+      // Exibe o símbolo de grau (apenas para Celsius e Fahrenheit)
+      if (temperaturaScale == 1 || temperaturaScale == 2) {
+        lcd.setCursor(9, 0);
+        lcd.print((char)223); // Símbolo de grau
+      }
+    }
+
+    void moverDestino(Display& display, Figura& personagem, int destino) {
+      Tela::moverDestino(display, personagem, destino, destinos, numDestinos);
+    }
+
+    void trocarEscala() {
+      temperaturaScale = (temperaturaScale % 3) + 1; // Alterna entre 1, 2 e 3
+    }
+
+    int getEscala() { return temperaturaScale; }
+};
+
+// ---- MÉTODOS PARA RETORNAR OS BYTES DOS ÍCONES ---- //
+byte* getHome() {
+  static byte home[] = { B00000, B11111, B11011, B10001, B10101, B10001, B11111, B00000 };
+  return home;
+}
+
+byte* getConfiguracoes() {
+  static byte configuracoes[] = { B00000, B00000, B01010, B11111, B01010, B11111, B01010, B00000 };
+  return configuracoes;
+}
+
+byte* getLuminosidade() {
+  static byte luminosidade[] = { B01110, B10001, B10101, B10101, B01110, B00000, B01110, B01110 };
+  return luminosidade;
+}
+
+byte* getUmidade() {
+  static byte umidade[] = { B00100, B00100, B01110, B01110, B11111, B10111, B10011, B01110 };
+  return umidade;
+}
+
+byte* getTemperatura() {
+  static byte temperatura[] = { B01110, B01010, B01010, B01010, B11111, B11111, B11111, B01110 };
+  return temperatura;
+}
+
+byte* getDataHora() {
+  static byte datahora[] = { B00000, B00000, B01110, B10101, B10111, B10001, B01110, B00000 };
+  return datahora;
+}
+
+// ---- CRIAÇÃO DE FIGURA ---- //
+byte amongusSprite[8] = {
+  B00000,
+  B01111,
+  B11000,
+  B11111,
+  B11111,
+  B11111,
+  B11111,
+  B01001
+};
+
+// ---- FUNÇÃO PARA RETORNAR O BYTE DO AMONGUS ---- //
+byte* getAmongUs() {
+  static byte amongusSprite[] = {
+    B00000,
+    B01111,
+    B11000,
+    B11111,
+    B11111,
+    B11111,
+    B11111,
+    B01001
+  };
+  return amongusSprite;
+}
+
+// ---- FUNÇÃO PARA RETORNAR O BYTE DO MAGUINHO ---- //
+byte* getMaguinho() {
+  static byte maguinho[] = {
+    B00000,
+    B01000,
+    B01000,
+    B11101,
+    B01001,
+    B11111,
+    B01001,
+    B10100
+  };
+  return maguinho;
+}
+
+// ---- DEFINIÇÃO DOS NOVOS BYTES ---- //
+byte abobora[] = { B00000, B00010, B00100, B01110, B10101, B11111, B10001, B01110 };
+byte cefsa[] = { B00000, B00000, B00000, B00100, B01000, B01010, B10011, B01111 };
+byte setinha[] = { B00000, B00100, B01110, B11111, B00100, B00100, B00100, B00100 };
+byte balao[] = { B00000, B01110, B10001, B10011, B10001, B01110, B00100, B01000 };
+byte bolinha[] = { B00000, B00000, B00000, B01110, B01110, B01110, B00000, B00000 };
+byte cubo[] = { B00000, B00000, B00000, B11111, B10001, B10101, B10001, B11111 };
+byte stickman[] = { B00000, B00100, B01010, B00100, B01110, B10101, B00100, B01010 };
+byte fantasma[] = { B00000, B01110, B11111, B11101, B11101, B11111, B11111, B10101 };
+
+// ---- LISTA DE BYTES DOS PERSONAGENS ---- //
+byte* getPersonagem(int indice) {
+  static byte* personagens[] = {
+    getAmongUs(), // AmongUs
+    getMaguinho(), // Maguinho
+    abobora,      // Abóbora
+    cefsa,        // Cefsa
+    setinha,      // Setinha
+    balao,        // Balão
+    bolinha,      // Bolinha
+    cubo,         // Cubo
+    stickman,     // Stickman
+    fantasma      // Fantasma
+  };
+  return personagens[indice];
+}
+
+
+// ---- VARIÁVEL PARA CONTROLAR O ÍNDICE DO PERSONAGEM ATUAL ---- //
+int indicePersonagem = 0; // Começa com o AmongUs (índice 0)
+
+// ---- VARIÁVEL PARA CONTROLAR O ESTADO DO PERSONAGEM ---- //
+bool isAmongUs = true; // Começa com o AmongUs
+
+// ---- FUNÇÃO PARA ALTERNAR ENTRE OS PERSONAGENS ---- //
+void alternarPersonagem(Figura& personagem) {
+  indicePersonagem = (indicePersonagem + 1) % 10; // Avança para o próximo personagem (10 personagens no total)
+  personagem = Figura("AmongUs", getPersonagem(indicePersonagem), 7); // Atualiza o personagem
+}
+
+
+Figura amongus("AmongUs", amongusSprite, 7);
+Display display;
+
+// ---- BOTÕES ---- //
+const int botaoVoltar = 7;
+const int botaoSelecionar = 6;
+const int botaoAvancar = 5;
+
+// ---- INSTÂNCIAS DAS TELAS ---- //
+Figura figHome("Home", getHome(), 5);
+Figura figLuminosidadeTela("Luminosidade", getLuminosidade(), 6);
+Figura figConfiguracoes("Configuracoes", getConfiguracoes(), 0);
+Figura figLuminosidade("Luminosidade", getLuminosidade(), 1);
+Figura figUmidade("Umidade", getUmidade(), 2);
+Figura figTemperatura("Temperatura", getTemperatura(), 3);
+Figura figDataHora("DataHora", getDataHora(), 4);
+
+TelaHome telaHome(figConfiguracoes, figLuminosidade, figUmidade, figTemperatura, figDataHora);
+TelaLuminosidade telaLuminosidade(figHome, figLuminosidadeTela);
+TelaDataHora telaDataHora(figHome);
+TelaUmidade telaUmidade(figHome, figUmidade);
+TelaTemperatura telaTemperatura(figHome, figTemperatura);
+
+// Função para carregar dados da EEPROM
+void carregarDadosEEPROM() {
+  EEPROM.get(addrLDR, valorLDR);
+  EEPROM.get(addrTemp, temp);
+  EEPROM.get(addrHumid, humid);
+}
+
+// Defina o pino do buzzer
+#define BUZZER_PIN 8  // Altere para o pino correto do seu buzzer
 
 // Primeira pose do mago
 void wizard1() {
@@ -707,19 +786,19 @@ void wizard1() {
   lcd.createChar(5, name1x1);
   lcd.createChar(6, name1x2);
 
-  lcd.setCursor(4, 1); 
+  lcd.setCursor(4, 1);
   lcd.write(0);
-  lcd.setCursor(0, 0); 
+  lcd.setCursor(0, 0);
   lcd.write(1);
-  lcd.setCursor(1, 0); 
+  lcd.setCursor(1, 0);
   lcd.write(2);
-  lcd.setCursor(2, 0); 
+  lcd.setCursor(2, 0);
   lcd.write(3);
-  lcd.setCursor(0, 1); 
+  lcd.setCursor(0, 1);
   lcd.write(4);
-  lcd.setCursor(1, 1); 
+  lcd.setCursor(1, 1);
   lcd.write(5);
-  lcd.setCursor(2, 1); 
+  lcd.setCursor(2, 1);
   lcd.write(6);
 
   delay(400);
@@ -765,19 +844,19 @@ void wizard2() {
   lcd.createChar(5, name1x1);
   lcd.createChar(6, name1x3);
 
-  lcd.setCursor(2, 1); 
+  lcd.setCursor(2, 1);
   lcd.write(0);
-  lcd.setCursor(0, 0); 
+  lcd.setCursor(0, 0);
   lcd.write(1);
-  lcd.setCursor(1, 0); 
+  lcd.setCursor(1, 0);
   lcd.write(2);
-  lcd.setCursor(2, 0); 
+  lcd.setCursor(2, 0);
   lcd.write(3);
-  lcd.setCursor(0, 1); 
+  lcd.setCursor(0, 1);
   lcd.write(4);
-  lcd.setCursor(1, 1); 
+  lcd.setCursor(1, 1);
   lcd.write(5);
-  lcd.setCursor(3, 1); 
+  lcd.setCursor(3, 1);
   lcd.write(6);
 }
 
@@ -785,7 +864,7 @@ void wizard2() {
 void magic() {
   // Palavra a ser exibida
   String word = "FORTUNATA!";
-  
+ 
   // Define o "ball" que será utilizado na animação
   byte ball[] = {
     B00100, B01110, B00100, B00000,
@@ -861,338 +940,347 @@ void magic() {
   lcd.print(" ");
   delay(500);
   noTone(BUZZER_PIN);
-}
-void displayRTC() {
-    DateTime nowRTC = rtc.now();
-    
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("DATA: ");
-    lcd.print(nowRTC.day() < 10 ? "0" : "");
-    lcd.print(nowRTC.day());
-    lcd.print("/");
-    lcd.print(nowRTC.month() < 10 ? "0" : ""); 
-    lcd.print(nowRTC.month());
-    lcd.print("/");
-    lcd.print(nowRTC.year());
-
-    lcd.setCursor(0, 1);
-    lcd.print("HORA: ");
-    lcd.print(nowRTC.hour() < 10 ? "0" : ""); 
-    lcd.print(nowRTC.hour());
-    lcd.print(":");
-    lcd.print(nowRTC.minute() < 10 ? "0" : ""); 
-    lcd.print(nowRTC.minute());
-    lcd.print(":");
-    lcd.print(nowRTC.second() < 10 ? "0" : ""); 
-    lcd.print(nowRTC.second());
+  lcd.clear();
 }
 
+// Defina os pinos dos LEDs e do buzzer
+#define LED_VERDE 10  // Pino do LED verde
+#define LED_AMARELO 11 // Pino do LED amarelo
+#define BUZZER_PIN 8   // Pino do buzzer
 
+// Variáveis para controle do buzzer
+bool buzzerOn = false; // Indica se o buzzer está ligado
 
+void setup() {
+  // Inicializa tudo
+  Serial.begin(9600);
+  dht.begin();
+  lcd.init();
+  lcd.backlight();
+    // Configura os pinos dos LEDs e do buzzer
+  pinMode(LED_VERDE, OUTPUT);
+  pinMode(LED_AMARELO, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
 
-/************************************************************
- *                FUNÇÕES DE LEITURA/SENSORES               *
- ************************************************************/
-// Calcula a média das últimas 10 leituras e exibe as telas de cada campo
-void tenthRead() {
-  float sumTemp = 0;
-  float sumHumd = 0;
+  // Executa a animação de inicialização
+  wizard1();
+  wizard2();
+  byte vazio[8] = {B00000, B00000, B00000, B00000, B00000, B00000, B00000, B00000};
+  for (int i = 0; i < 8; i++) {
+    lcd.createChar(i, vazio);
+  }
+  magic();
 
-  for (int i = 0; i < 10; i++) {
-    sumTemp += tempReadings[i];
-    sumHumd += humdReadings[i];
+  // Inicializa o RTC
+  if (!rtc.begin()) { // SE O RTC NÃO FOR INICIALIZADO, FAZ
+    Serial.println("DS3231 não encontrado"); // IMPRIME O TEXTO NO MONITOR SERIAL
+    while (1); // SEMPRE ENTRE NO LOOP
   }
 
-  lastAvgTemp = sumTemp / 10;
-  lastAvgHumd = sumHumd / 10;
-
-  if (homePageActive) {
-    checkTempAlert();
-    checkHumdAlert();
+  if (rtc.lostPower()) { // SE RTC FOI LIGADO PELA PRIMEIRA VEZ / FICOU SEM ENERGIA / ESGOTOU A BATERIA, FAZ
+    Serial.println("DS3231 OK! Ajustando data/hora..."); // IMPRIME O TEXTO NO MONITOR SERIAL
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); // Ajusta a data/hora com base no momento da compilação
   }
+
+  // Carrega os dados da EEPROM
+  carregarDadosEEPROM();
+
+  // Botões
+  pinMode(botaoVoltar, INPUT_PULLUP);
+  pinMode(botaoSelecionar, INPUT_PULLUP);
+  pinMode(botaoAvancar, INPUT_PULLUP);
+
+  telaHome.imprimirTela(display);
+  display.imprimirFigura(amongus, 1, 1, false);
 }
 
-void checkTempAlert() {
-  float minTempThreshold = 15.0;
-  float maxTempThreshold = 25.0;
-
-  // Ajusta os limites de temperatura de acordo com a escala selecionada
-  switch (temperatureScale) {
-    case 2: // Fahrenheit
-      minTempThreshold = (15.0 * 1.8) + 32;  // Convertendo para Fahrenheit
-      maxTempThreshold = (25.0 * 1.8) + 32;
-      break;
-    case 3: // Kelvin
-      minTempThreshold = 15.0 + 273.15;  // Convertendo para Kelvin
-      maxTempThreshold = 25.0 + 273.15;
-      break;
-  }
-
-  if ((lastAvgTemp < minTempThreshold) || (lastAvgTemp > maxTempThreshold)) {
-    // Faixa perigosa
-    digitalWrite(LED_RED, HIGH);
-
-    // Se o buzzer não estiver ligado, ligamos agora
-    if (!buzzerOn) {
-      tone(BUZZER_PIN, 1000);  // Exemplo de frequência
-      buzzerOn         = true;
-      buzzerTempReason = true;
-    }
-  }
-  else {
-    // Faixa segura
-    digitalWrite(LED_RED, LOW);
-
-    if (buzzerTempReason) {
-      buzzerTempReason = false;
-      // Se não há outro motivo, desliga
-      if (!buzzerHumdReason && !buzzerLightReason) {
-        noTone(BUZZER_PIN);
-        buzzerOn = false;
+void loop() {
+  // Verifica o botão de voltar
+  if (digitalRead(botaoVoltar) == LOW) {
+    if (telaAtual == TELA_DATAHORA) {
+      // Na TelaDataHora, o botão de voltar move o personagem de (9,1) para (2,1)
+      int destinoAtual = telaDataHora.getDestinoAtual();
+      if (destinoAtual == 0) { // Se estiver em (9,1), move para (2,1)
+        telaDataHora.moverDestino(display, amongus, 1);
       }
-    }
-  }
-}
-
-
-void checkHumdAlert() {
-  // Fora da faixa => acende ledGre, liga buzzer se não estiver ligado
-  if ((lastAvgHumd < 40.0) || (lastAvgHumd > 65.0)) {
-    digitalWrite(LED_GRE, HIGH);
-
-    // Se o buzzer ainda não estiver ligado, ligue-o
-    if (!buzzerOn) {
-      tone(BUZZER_PIN, 1000); 
-      buzzerOn = true;
-      buzzerHumdReason = true;
-    }
-  }
-  else {
-    // Dentro da faixa => desliga ledGre
-    digitalWrite(LED_GRE, LOW);
-
-    // Se o buzzer estava ligado especificamente pela umidade...
-    if (buzzerHumdReason) {
-      buzzerHumdReason = false;
-      if (!buzzerTempReason && !buzzerLightReason) {
-        noTone(BUZZER_PIN);
-        buzzerOn = false;
+    } else if (telaAtual == TELA_HOME) {
+      int destinoAtual = telaHome.getDestinoAtual();
+      if (destinoAtual > 0) {
+        telaHome.moverDestino(display, amongus, destinoAtual - 1);
       }
-    }
-  }
-}
-
-void checkLightAlert() {
-  // Fora da faixa => acende ledYel, liga buzzer
-  if ((lightLevel < 0) || (lightLevel > 30)) {
-    digitalWrite(LED_YEL, HIGH);
-
-    // Se o buzzer não estiver ligado, ligue-o
-    if (!buzzerOn) {
-      tone(BUZZER_PIN, 1000);
-      buzzerOn          = true;
-      buzzerLightReason = true;
-    }
-  }
-  else {
-    // Dentro da faixa => desliga ledYel
-    digitalWrite(LED_YEL, LOW);
-
-    // Se o buzzer estava ligado por causa da luminosidade...
-    if (buzzerLightReason) {
-      buzzerLightReason = false;
-      // Se não há outro motivo, desliga
-      if (!buzzerTempReason && !buzzerHumdReason) {
-        noTone(BUZZER_PIN);
-        buzzerOn = false;
+    } else if (telaAtual == TELA_LUMINOSIDADE) {
+      int destinoAtual = telaLuminosidade.getDestinoAtual();
+      if (destinoAtual > 0) {
+        telaLuminosidade.moverDestino(display, amongus, destinoAtual - 1);
       }
-    }
-  }
-}
-
-void getNextAddress() {
-    currentAddress += recordSize;
-    if (currentAddress >= endAddress) {
-        currentAddress = 0; // Volta para o começo se atingir o limite
-    }
-}
-
-void get_log() {
-    Serial.println("Data stored in EEPROM:");
-    Serial.println("Timestamp\t\tTemperatura\tUmidade\tLuminosidade");
-
-    for (int address = startAddress; address < endAddress; address += recordSize) {
-        long timeStamp;
-        int tempInt, humiInt, lumiInt;
-
-        // Ler dados da EEPROM
-        EEPROM.get(address, timeStamp);
-        EEPROM.get(address + 4, tempInt);
-        EEPROM.get(address + 6, humiInt);
-
-        // Converter valores
-        float temperature = tempInt / 100.0;
-        float humidity = humiInt / 100.0;
-
-        // Verificar se os dados são válidos antes de imprimir
-        if (timeStamp != 0xFFFFFFFF) { // 0xFFFFFFFF é o valor padrão de uma EEPROM não inicializada
-            DateTime dt(timeStamp);
-            // Serial.print(dt.timestamp(DateTime::TIMESTAMP_FULL));
-            
-            // Formata manualmente a data e a hora
-            Serial.print(dt.year());
-            Serial.print("-");
-            Serial.print(dt.month() < 10 ? "0" : ""); // Adiciona zero à esquerda se necessário
-            Serial.print(dt.month());
-            Serial.print("-");
-            Serial.print(dt.day() < 10 ? "0" : ""); // Adiciona zero à esquerda se necessário
-            Serial.print(dt.day());
-            Serial.print(" ");
-            Serial.print(dt.hour() < 10 ? "0" : ""); // Adiciona zero à esquerda se necessário
-            Serial.print(dt.hour());
-            Serial.print(":");
-            Serial.print(dt.minute() < 10 ? "0" : ""); // Adiciona zero à esquerda se necessário
-            Serial.print(dt.minute());
-            Serial.print(":");
-            Serial.print(dt.second() < 10 ? "0" : ""); // Adiciona zero à esquerda se necessário
-            Serial.print(dt.second());
-            
-            Serial.print("\t");
-            Serial.print(temperature);
-            Serial.print(" C\t\t");
-            Serial.print(humidity);
-            Serial.println(" %");
+    } else if (telaAtual == TELA_UMIDADE) {
+      int destinoAtual = telaUmidade.getDestinoAtual();
+      if (destinoAtual > 0) {
+        telaUmidade.moverDestino(display, amongus, destinoAtual - 1);
+      }
+    } else if (telaAtual == TELA_TEMPERATURA) {
+      int destinoAtual = telaTemperatura.getDestinoAtual();
+      if (destinoAtual > 0) {
+        if (destinoAtual == 3) { // pular posição inicial
+          telaTemperatura.moverDestino(display, amongus, destinoAtual - 2);
+        } else {
+          telaTemperatura.moverDestino(display, amongus, destinoAtual - 1);
         }
-    }
-}
-
-void recordEEPROM(){
-  now = rtc.now();
-
-  // Calculando o deslocamento do fuso horário
-  int offsetSeconds = UTC_OFFSET * 3600; // Convertendo horas para segundos
-  now = now.unixtime() + offsetSeconds; // Adicionando o deslocamento ao tempo atual
-
-  // Convertendo o novo tempo para DateTime
-  adjustedTime = DateTime(now);
-
-  // Verifica se o minuto atual é diferente do minuto do último registro
-  if (adjustedTime.minute() != lastLoggedMinute) {
-      lastLoggedMinute = adjustedTime.minute();
-
-      // Verifica se os valores estão fora dos limites estabelecidos
-      if (lastAvgTemp < trigger_t_min || lastAvgTemp > trigger_t_max || 
-          lastAvgHumd < trigger_u_min || lastAvgHumd > trigger_u_max || 
-          lightLevel < trigger_l_min || lightLevel > trigger_l_max) {
-          
-          // Converter valores para int para armazenamento na EEPROM
-          int tempInt = (int)(lastAvgTemp * 100);
-          int humiInt = (int)(lastAvgHumd * 100);
-
-          // Escrever dados na EEPROM
-          EEPROM.put(currentAddress, now.unixtime());  // Armazena timestamp
-          EEPROM.put(currentAddress + 4, tempInt);     // Armazena temperatura
-          EEPROM.put(currentAddress + 6, humiInt);     // Armazena umidade
-
-          // Exibir os dados gravados no monitor serial
-          Serial.println("Registro de Anomalia Gravado:");
-          Serial.print("Data/Hora: ");
-          Serial.print(adjustedTime.year());
-          Serial.print("-");
-          Serial.print(adjustedTime.month() < 10 ? "0" : ""); Serial.print(adjustedTime.month());
-          Serial.print("-");
-          Serial.print(adjustedTime.day() < 10 ? "0" : ""); Serial.print(adjustedTime.day());
-          Serial.print(" ");
-          Serial.print(adjustedTime.hour() < 10 ? "0" : ""); Serial.print(adjustedTime.hour());
-          Serial.print(":");
-          Serial.print(adjustedTime.minute() < 10 ? "0" : ""); Serial.print(adjustedTime.minute());
-          Serial.print(":");
-          Serial.print(adjustedTime.second() < 10 ? "0" : ""); Serial.println(adjustedTime.second());
-
-          Serial.print("Temperatura: "); Serial.print(lastAvgTemp); Serial.println("°C");
-          Serial.print("Umidade: "); Serial.print(lastAvgHumd); Serial.println("%");
-          Serial.print("Luminosidade: "); Serial.print(lightLevel); Serial.println("%");
-          Serial.println("---------------------------------");
-
-          // Atualiza o endereço para o próximo registro
-          getNextAddress();
       }
+    }
+    delay(200); // Debounce
+  }
+
+  // Verifica o botão de avançar
+  if (digitalRead(botaoAvancar) == LOW) {
+    if (telaAtual == TELA_HOME) {
+      int destinoAtual = telaHome.getDestinoAtual();
+      if (destinoAtual < 6) {
+        telaHome.moverDestino(display, amongus, destinoAtual + 1);
+      }
+    } else if (telaAtual == TELA_LUMINOSIDADE) {
+      int destinoAtual = telaLuminosidade.getDestinoAtual();
+      if (destinoAtual < 2) {
+        telaLuminosidade.moverDestino(display, amongus, destinoAtual + 1);
+      }
+    } else if (telaAtual == TELA_UMIDADE) {
+      int destinoAtual = telaUmidade.getDestinoAtual();
+      if (destinoAtual < 1) {
+        telaUmidade.moverDestino(display, amongus, destinoAtual + 1);
+      }
+    } else if (telaAtual == TELA_TEMPERATURA) {
+      int destinoAtual = telaTemperatura.getDestinoAtual();
+      if (destinoAtual < 3) {
+        if (destinoAtual == 1) { // pular posicao inicial
+          telaTemperatura.moverDestino(display, amongus, destinoAtual + 2);
+        } else {
+          telaTemperatura.moverDestino(display, amongus, destinoAtual + 1);
+        }
+      }
+    }
+    // Na TelaDataHora, o botão de avançar não faz nada
+    delay(200); // Debounce
+  }
+
+  // Verifica o botão de selecionar
+  if (digitalRead(botaoSelecionar) == LOW) {
+    int xAtual = display.getPersonagemX();
+    int yAtual = display.getPersonagemY();
+   
+    if (telaAtual == TELA_HOME) {
+      telaHome.selecionar(display, amongus);
+       if (xAtual == 11 && yAtual == 1) {
+         // Alterna entre os personagens
+        alternarPersonagem(amongus);
+        // Atualiza a exibição do personagem na tela
+        display.imprimirFigura(amongus, xAtual, yAtual, display.getPersonagemEspelhado());
+      } else if (xAtual == 5 && yAtual == 1) {
+        // Muda para TelaUmidade
+        telaAtual = TELA_UMIDADE;
+        telaUmidade.imprimirTela(display);
+        telaUmidade.setDestinoAtual(2);
+      } else if (xAtual == 7 && yAtual == 1) {
+        // Muda para TelaTemperatura
+        telaAtual = TELA_TEMPERATURA;
+        telaTemperatura.imprimirTela(display);
+        telaTemperatura.setDestinoAtual(2);
+      }
+      if (xAtual == 9 && yAtual == 1) {
+        // Muda para TelaDataHora
+        telaAtual = TELA_DATAHORA;
+        telaDataHora.imprimirTela(display);
+
+        // Reinicia o destinoAtual para 0 (posição inicial)
+        telaDataHora.moverDestino(display, amongus, 0);
+      } else if (xAtual == 3 && yAtual == 1) {
+        // Muda para TelaLuminosidade
+        telaAtual = TELA_LUMINOSIDADE;
+        telaLuminosidade.imprimirTela(display);
+        telaLuminosidade.setDestinoAtual(1);
+      }
+    } else if (telaAtual == TELA_DATAHORA) {
+      telaDataHora.selecionar(display, amongus);
+      if (xAtual == 0 && yAtual == 1) {
+        // Volta para TelaHome
+       
+        telaAtual = TELA_HOME;
+        telaHome.imprimirTela(display);
+        telaHome.setDestinoAtual(1);
+        // Limpa a posição (9,1) antes de mover o personagem para (2,1)
+        display.limparCelula(9, 1);
+        // Move o personagem para (0,1) e mantém o espelhamento
+        bool espelhar = display.getPersonagemEspelhado();
+        display.imprimirFigura(amongus, 0, 1, espelhar);
+        // Reinicia o destinoAtual para 0 (posição inicial)
+        telaHome.moverDestino(display, amongus, 0);
+      }
+    } else if (telaAtual == TELA_LUMINOSIDADE) {
+      telaLuminosidade.selecionar(display, amongus);
+      if (xAtual == 3 && yAtual == 1) {
+        // Volta para TelaHome
+        telaAtual = TELA_HOME;
+        telaHome.imprimirTela(display);
+      } else if (xAtual == 11 && yAtual == 1) {
+        // Alterna entre percentual e valor bruto
+        mostrarPercentual = !mostrarPercentual;
+        telaLuminosidade.imprimirTela(display); // Atualiza a tela
+      }
+    } else if (telaAtual == TELA_TEMPERATURA) {
+      telaTemperatura.selecionar(display, amongus);
+      if (xAtual == 11 && yAtual == 1) {
+      telaTemperatura.trocarEscala();
+      telaTemperatura.imprimirTela(display); // Atualiza a tela com a nova escala
+      } else if (xAtual == 3 && yAtual == 1) {
+          // Volta para TelaHome
+          telaAtual = TELA_HOME;
+          telaHome.imprimirTela(display);
+          telaHome.setDestinoAtual(1);
+      }
+    } else if (telaAtual == TELA_UMIDADE) {
+      telaUmidade.selecionar(display, amongus);
+      if (xAtual == 3 && yAtual == 1) {
+        telaAtual = TELA_HOME;
+        telaHome.imprimirTela(display);
+        telaHome.setDestinoAtual(1);
+      }
+    } else {
+      // Executa o pulo normal
+      display.pularFigura(amongus, xAtual, yAtual, display.getPersonagemEspelhado());
+    }
+    delay(200); // Debounce
+  }
+
+  // Leitura do LDR e atualização da data/hora e DHT
+  unsigned long tempoAtual = millis();
+
+  // Verifica se passaram 5 segundos desde a última leitura
+  if (tempoAtual - ultimaLeitura >= intervaloLeitura || tempoAtual == 0) {
+    ultimaLeitura = tempoAtual;
+
+    // Leitura do DHT22
+    float tempRaw = dht.readTemperature(); // Celsius
+    float humRaw = dht.readHumidity();
+
+    if (!isnan(tempRaw)) {
+      temp = tempRaw; // Armazena a temperatura lida
+    }
+
+    if (!isnan(humRaw)) {
+      humid = humRaw; // Armazena a umidade lida
+    }
+
+    // Faz a leitura do LDR
+    valorLDR = analogRead(LDR_PIN);
+    lightLevel = map(valorLDR, 300, 40, 100, 0);
+    lightLevel = constrain(lightLevel, 0, 100);
+
+    // Salva os dados na EEPROM
+    salvarDadosEEPROM();
+
+    // Atualiza a tela de luminosidade se estiver ativa
+    if (telaAtual == TELA_LUMINOSIDADE) {
+      telaLuminosidade.imprimirTela(display);
+    }
+
+    // Atualiza a tela de data/hora se estiver ativa
+    if (telaAtual == TELA_DATAHORA) {
+      telaDataHora.imprimirTela(display);
+    }
+
+    // Verifica as condições para ligar o LED amarelo e o buzzer
+    if ((lightLevel < 10) || (lightLevel > 40)) {
+      digitalWrite(LED_AMARELO, HIGH); // Liga o LED amarelo
+      if (!buzzerOn) {
+        tone(BUZZER_PIN, 1000); // Liga o buzzer
+        buzzerOn = true;
+      }
+    } else if ((temp < 20) || (temp > 25)) {
+      digitalWrite(LED_AMARELO, HIGH); // Liga o LED amarelo
+      if (!buzzerOn) {
+        tone(BUZZER_PIN, 1000); // Liga o buzzer
+        buzzerOn = true;
+      }
+    } else if (humid < 30 || humid > 60) {
+      digitalWrite(LED_AMARELO, HIGH); // Liga o LED amarelo
+      if (!buzzerOn) {
+        tone(BUZZER_PIN, 1000); // Liga o buzzer
+        buzzerOn = true;
+      }
+    } else {
+      digitalWrite(LED_AMARELO, LOW); // Desliga o LED amarelo
+      if (buzzerOn) {
+        noTone(BUZZER_PIN); // Desliga o buzzer
+        buzzerOn = false;
+      }
+    }
   }
 }
 
-// Exibe informações no monitor serial
-void serialLog(float temp, float humid, int valorLDR, long leituraNum) {
-  now = rtc.now();
+// Função para salvar dados na EEPROM e imprimir no serial
+void salvarDadosEEPROM() {
+  EEPROM.put(addrLDR, valorLDR);
+  EEPROM.put(addrTemp, temp);
+  EEPROM.put(addrHumid, humid);
 
-  // Calculando o deslocamento do fuso horário
-  int offsetSeconds = UTC_OFFSET * 3600; // Convertendo horas para segundos
-  now = now.unixtime() + offsetSeconds; // Adicionando o deslocamento ao tempo atual
-
-  // Convertendo o novo tempo para DateTime
-  adjustedTime = DateTime(now);
-  
-  // Determina o caractere de escala
-  String scaleChar = "°C";
-  if (temperatureScale == 2)      scaleChar = "°F";
-  else if (temperatureScale == 3) scaleChar = "°K";
-
-  Serial.println("Leitura: " + String(leituraNum + 1));
-  Serial.println("Temp: " + String(temp) + scaleChar);
-  Serial.println("Ultima Temp Media: " + String(lastAvgTemp) + scaleChar);
-  Serial.println("Umidade: " + String(humid) + " %");
-  Serial.println("Ultima Umidade Media: " + String(lastAvgHumd) + " %");
-  Serial.println("Luminosidade: " + String(lightLevel) + " %");
-  Serial.println("ValorLDR: " + String(valorLDR));
-  Serial.print(adjustedTime.day());
-  Serial.print("/");
-  Serial.print(adjustedTime.month());
-  Serial.print("/");
-  Serial.print(adjustedTime.year());
-  Serial.print(" ");
-  Serial.print(adjustedTime.hour() < 10 ? "0" : ""); // Adiciona zero à esquerda se hora for menor que 10
-  Serial.print(adjustedTime.hour());
-  Serial.print(":");
-  Serial.print(adjustedTime.minute() < 10 ? "0" : ""); // Adiciona zero à esquerda se minuto for menor que 10
-  Serial.print(adjustedTime.minute());
-  Serial.print(":");
-  Serial.print(adjustedTime.second() < 10 ? "0" : ""); // Adiciona zero à esquerda se segundo for menor que 10
-  Serial.print(adjustedTime.second());
-  Serial.print("\n");
-  Serial.println("---");
+  // Imprime os valores salvos na EEPROM no monitor serial
+  Serial.println("Dados salvos na EEPROM:");
+  Serial.print("Valor LDR: ");
+  Serial.println(valorLDR);
+  Serial.print("Temperatura: ");
+  Serial.println(temp);
+  Serial.print("Umidade: ");
+  Serial.println(humid);
 }
+
 ```
----
 
-## 🚧 Recomendações e Observações Gerais
+### 📦 Estrutura Modular
 
-- Garanta a correta conexão elétrica e a alimentação adequada dos sensores.
-- Descarregue periodicamente os dados registrados para não ultrapassar o limite de armazenamento da EEPROM.
-- O RTC precisa ser configurado previamente.
+- Classes:
+  - `Figura`: Define o sprite do personagem/ícone.
+  - `Display`: Gerencia o desenho no LCD (animações, movimento).
+  - `Tela`: Classe base para telas (menu, sensores etc).
+  - Subclasses específicas para cada tela:
+    - `TelaHome`
+    - `TelaLuminosidade`
+    - `TelaTemperatura`
+    - `TelaUmidade`
+    - `TelaDataHora`
 
----
+### 🧠 Funções-Chave
 
-## 🛠️ Bibliotecas Necessárias
+```cpp
+void alternarPersonagem(Figura& personagem);
+// Alterna para o próximo sprite da lista de personagens.
 
-Instale as seguintes bibliotecas através do **Gerenciador de Bibliotecas do Arduino IDE**:
+void imprimirValorLDR();
+// Exibe o valor do LDR, em percentual ou valor bruto.
 
-- ✅ `LiquidCrystal_I2C`
-- ✅ `RTClib` (Adafruit)
-- ✅ `DHT sensor library` (Adafruit)
+void salvarDadosEEPROM();
+// Salva os dados dos sensores na EEPROM.
 
----
+void carregarDadosEEPROM();
+// Recupera os dados ao iniciar o sistema.
+```
 
-## 📅 Histórico de Versões
+### 🔄 Loop principal
+Monitora botões e movimenta personagem entre ícones.
+Executa ações como alternar personagens, mudar telas, trocar escala de temperatura etc.
+Atualiza leituras dos sensores e salva EEPROM a cada 5s.
+Gera alertas visuais e sonoros quando os valores saem da faixa ideal.
+### 🧪 Como Usar
+Monte os componentes conforme os pinos especificados.
+Carregue o código para o Arduino.
+Abra o Monitor Serial (opcional) para ver os dados salvos.
+Utilize os botões para explorar os menus e brincar com os personagens!
 
-| Versão | Data       | Descrição                     |
-|--------|------------|-------------------------------|
-| v1.0   | 19/03/2025 | Lançamento inicial            |
+### 🎉 Destaque: Interface Amigável e Lúdica
+Este projeto vai além de uma simples estação de monitoramento. Ele proporciona uma experiência lúdica e divertida, ideal para:
 
----
+Apresentações escolares e universitárias
+Ambientes educativos
+Interações com crianças
+Demonstração de conceitos de IoT com interface amigável
 
-📌 **Observação:**  
-Para contribuições, melhorias ou dúvidas, entre em contato com o autor do projeto.
 
----
-
-✨ **Fim do README.md**
+## ✨ Fim do README.md
