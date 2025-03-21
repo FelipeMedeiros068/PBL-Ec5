@@ -56,7 +56,8 @@ Este projeto é um sistema de monitoramento automático de temperatura, umidade 
 
 ### Diagrama Elétrico
 
-*Insira aqui o diagrama elétrico do sistema, se disponível.*
+![DIAGRAMA ELETRICO 2 0](https://github.com/user-attachments/assets/3bc87457-ac44-42ed-b805-9a68a2ade254)
+
 
 ---
 
