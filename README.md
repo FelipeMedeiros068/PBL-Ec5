@@ -1269,6 +1269,7 @@ Monitora botões e movimenta personagem entre ícones.
 Executa ações como alternar personagens, mudar telas, trocar escala de temperatura etc.
 Atualiza leituras dos sensores e salva EEPROM a cada 5s.
 Gera alertas visuais e sonoros quando os valores saem da faixa ideal.
+
 ### 🧪 Como Usar
 Monte os componentes conforme os pinos especificados.
 Carregue o código para o Arduino.
@@ -1282,6 +1283,10 @@ Apresentações escolares e universitárias
 Ambientes educativos
 Interações com crianças
 Demonstração de conceitos de IoT com interface amigável
+
+### ▶️ Video no Youtube
+
+https://www.youtube.com/watch?v=VkIX3WWGT2w
 
 
 ## ✨ Fim do README.md
